@@ -62,7 +62,7 @@ docker:build:
         --build-arg "PHP_VERSION=$PHP_VERSION" \
         --build-arg "DEBIAN_CODENAME=$DEBIAN_CODENAME" \
         --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_PHP" \
-        --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_DEB"
+        --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_DEB" \
         --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_COMMIT" \
-        --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_UNIQUE_BUILD" \
+        --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_UNIQUE_BUILD"
     )
