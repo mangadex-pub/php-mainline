@@ -1,0 +1,64 @@
+stages:
+  - Build
+
+variables:
+  DEBIAN_CODENAME: "bullseye"
+  GIT_DEPTH: "1"
+  PHP_VERSION: "8.1"
+  TZ: "UTC"
+
+docker:build:
+  stage: Build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  needs: [ ]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"gitlab-ci-token\",\"password\":\"$CI_JOB_TOKEN\"}}}" > /kaniko/.docker/config.json
+  script: |
+    set -eu
+
+    export JOB_TIMESTAMP="$(date -D '%Y-%m-%dT%H:%M:%S' -d "$CI_JOB_STARTED_AT" +'%Y%m%d%H%M')"
+    echo "Building image with"
+    echo "  ->     php version: $PHP_VERSION"
+    echo "  -> debian codename: $DEBIAN_CODENAME"
+    echo "  -> git commit hash: $CI_COMMIT_SHORT_SHA"
+    echo "  -> build timestamp: $JOB_TIMESTAMP"
+
+    export IMAGE_TAG_ROLLING_PHP="$PHP_VERSION"
+    if [ "$CI_COMMIT_REF_NAME" != "$CI_DEFAULT_BRANCH" ]; then
+      export IMAGE_TAG_ROLLING_PHP="branch-$CI_COMMIT_REF_SLUG-$IMAGE_TAG_ROLLING_PHP"
+      echo "Git reference $CI_COMMIT_REF_NAME is not the default branch. Rewriting git rolling tag as $IMAGE_TAG_ROLLING_PHP."
+    fi
+
+    export IMAGE_TAG_ROLLING_DEB="$IMAGE_TAG_ROLLING_PHP-$DEBIAN_CODENAME"
+    if [ "$CI_COMMIT_REF_NAME" != "$CI_DEFAULT_BRANCH" ]; then
+      export IMAGE_TAG_ROLLING_DEB="branch-$CI_COMMIT_REF_SLUG-$IMAGE_TAG_ROLLING_DEB"
+      echo "Git reference $CI_COMMIT_REF_NAME is not the default branch. Rewriting git rolling tag as $IMAGE_TAG_ROLLING_DEB."
+    fi
+
+    export IMAGE_TAG_ROLLING_COMMIT="$IMAGE_TAG_ROLLING_DEB-$CI_COMMIT_SHORT_SHA"
+    export IMAGE_TAG_UNIQUE_BUILD="$IMAGE_TAG_ROLLING_COMMIT-$JOB_TIMESTAMP"
+
+    echo "***"
+    echo "Will build and push image as:"
+    echo "- $CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_PHP"
+    echo "- $CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_DEB"
+    echo "- $CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_COMMIT"
+    echo "- $CI_REGISTRY_IMAGE:$IMAGE_TAG_UNIQUE_BUILD"
+    echo "***"
+
+    (
+      set -x;
+      /kaniko/executor \
+        --single-snapshot \
+        --context . \
+        --dockerfile Dockerfile \
+        --build-arg "PHP_VERSION=$PHP_VERSION" \
+        --build-arg "DEBIAN_CODENAME=$DEBIAN_CODENAME" \
+        --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_PHP" \
+        --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_DEB"
+        --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_ROLLING_COMMIT" \
+        --destination "$CI_REGISTRY_IMAGE:$IMAGE_TAG_UNIQUE_BUILD" \
+    )
