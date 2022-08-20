@@ -73,6 +73,11 @@ COPY --chown=root:root 20-snuffleupagus.ini /etc/php/${PHP_VERSION}/cli/conf.d/2
 COPY --chown=root:root 20-snuffleupagus.ini /etc/php/${PHP_VERSION}/cgi/conf.d/20-snuffleupagus.ini
 COPY --chown=root:root 20-snuffleupagus.ini /etc/php/${PHP_VERSION}/fpm/conf.d/20-snuffleupagus.ini
 
-RUN php${PHP_VERSION}     -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus"
-RUN php-cgi${PHP_VERSION} -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus"
-RUN php-fpm${PHP_VERSION} -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus"
+RUN php${PHP_VERSION}     -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus" >/dev/null
+RUN php-cgi${PHP_VERSION} -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus" >/dev/null
+RUN php-fpm${PHP_VERSION} -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus" >/dev/null
+
+RUN groupadd -r -g 999 mangadex && useradd -u 999 -r -g 999 mangadex
+USER mangadex
+WORKDIR /tmp
+RUN php -v
