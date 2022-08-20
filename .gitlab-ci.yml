@@ -2,8 +2,12 @@ stages:
   - Build
 
 variables:
-  DEBIAN_CODENAME: "bullseye"
+  # Gitlab-CI variables
   GIT_DEPTH: "1"
+  KUBERNETES_MEMORY_REQUEST: 2Gi
+  KUBERNETES_MEMORY_LIMIT: 2Gi
+  # Relevant image variables
+  DEBIAN_CODENAME: "bullseye"
   PHP_VERSION: "8.1"
   TZ: "UTC"
 
