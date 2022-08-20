@@ -34,7 +34,6 @@ RUN apt -q update && \
     apt -qq -y autoremove && \
     apt -qq -y --no-install-recommends install \
       pcre2-utils \
-      php${PHP_VERSION}-cgi \
       php${PHP_VERSION}-cli \
       php${PHP_VERSION}-fpm && \
     apt -qq -y --purge autoremove && \
@@ -67,14 +66,12 @@ FROM base
 COPY --from=snuffleupagus --chown=root:root /snuffleupagus/src/modules/snuffleupagus.so /tmp/snuffleupagus.so
 RUN chmod -v 0644 "/tmp/snuffleupagus.so" && \
     mv -fv "/tmp/snuffleupagus.so" "$(php -r 'echo ini_get("extension_dir");')/snuffleupagus.so" # && \
-    chmod -v 0644 "/etc/php/${PHP_VERSION}/{cgi,cli,fpm}/conf.d/20-snuffleupagus.ini"
+    chmod -v 0644 "/etc/php/${PHP_VERSION}/{cli,fpm}/conf.d/20-snuffleupagus.ini"
 
 COPY --chown=root:root 20-snuffleupagus.ini /etc/php/${PHP_VERSION}/cli/conf.d/20-snuffleupagus.ini
-COPY --chown=root:root 20-snuffleupagus.ini /etc/php/${PHP_VERSION}/cgi/conf.d/20-snuffleupagus.ini
-COPY --chown=root:root 20-snuffleupagus.ini /etc/php/${PHP_VERSION}/fpm/conf.d/20-snuffleupagus.ini
-
 RUN php${PHP_VERSION}     -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus" >/dev/null
-RUN php-cgi${PHP_VERSION} -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus" >/dev/null
+
+COPY --chown=root:root 20-snuffleupagus.ini /etc/php/${PHP_VERSION}/fpm/conf.d/20-snuffleupagus.ini
 RUN php-fpm${PHP_VERSION} -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus" >/dev/null
 
 RUN groupadd -r -g 999 mangadex && useradd -u 999 -r -g 999 mangadex

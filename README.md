@@ -2,7 +2,7 @@
 
 Mainline Debian runtime for PHP using Sury's great packages from https://deb.sury.org
 
-The image includes the CLI, CGI and FPM SAPIs, with minimal configuration changes (see below)
+The image includes the CLI and FPM SAPIs, with minimal configuration changes (see below)
 
 ## Get started
 
