@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND "noninteractive"
 ENV TZ "UTC"
 RUN echo 'Dpkg::Progress-Fancy "0";' > /etc/apt/apt.conf.d/99progressbar
 
-ARG PHP_VERSION="8.1"
+ARG PHP_VERSION="8.2"
 ENV PHP_VERSION="${PHP_VERSION}"
 
 RUN apt -q update && \
@@ -42,7 +42,7 @@ RUN apt -q update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/* /var/log/*
 
 # Updated to latest available from time to time
-COPY --from=docker.io/composer/composer:2.4.0 /usr/bin/composer /usr/bin/composer
+COPY --from=docker.io/library/composer:2.4.4 /usr/bin/composer /usr/bin/composer
 RUN php -v && composer -V
 
 FROM base as snuffleupagus
@@ -59,7 +59,7 @@ RUN apt -q update && \
       re2c
 
 COPY build-snuffleupagus.sh /build-snuffleupagus.sh
-RUN /build-snuffleupagus.sh /snuffleupagus v0.8.2
+RUN /build-snuffleupagus.sh /snuffleupagus v0.8.3
 
 FROM base
 
