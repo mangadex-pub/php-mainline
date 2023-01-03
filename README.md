@@ -15,14 +15,14 @@ Image tags are as follows:
 - $PHP_VERSION
 - $PHP_VERSION-$DEBIAN_CODENAME
 - $PHP_VERSION-$DEBIAN_CODENAME-$GIT_SHA
-- $PHP_VERSION-$DEBIAN_CODENAME-$GIT_SHA-$BUILD_DATE
+- $GIT_BRANCH_NAME-$PHP_VERSION-$DEBIAN_CODENAME-$GIT_SHA
 
 For example:
 
 - 8.1
 - 8.1-bullseye
 - 8.1-bullseye-a12345f
-- 8.1-bullseye-a12345f-202201082204
+- branch-main-8.1-bullseye-a12345f
 
 > Note that we don't run outdated PHP versions, and specifically track latest builds asap; that usually means on the
 > week of their releases for minor and patch versions, and within 2-3 weeks of release for major versions if at all
