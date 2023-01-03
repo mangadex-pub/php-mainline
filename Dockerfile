@@ -59,7 +59,7 @@ RUN apt -q update && \
       re2c
 
 COPY build-snuffleupagus.sh /build-snuffleupagus.sh
-RUN /build-snuffleupagus.sh /snuffleupagus 808e7bff7e17b4f22a64120162734301aa065db0
+RUN /build-snuffleupagus.sh "/snuffleupagus" "v0.9.0"
 
 FROM base
 
