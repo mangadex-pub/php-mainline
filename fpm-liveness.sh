@@ -3,13 +3,13 @@
 set -euo pipefail
 
 if [ -z "${FPM_SOCKET_ADDR:-}" ]; then
-    echo "FPM_SOCKET_ADDR should be defined but was empty."
-    exit 1
+  echo "FPM_SOCKET_ADDR should be defined but was empty."
+  exit 1
 fi
 
 if [ -z "${FPM_STATUS_PATH:-}" ]; then
-    echo "FPM_STATUS_PATH should be defined but was empty."
-    exit 1
+  echo "FPM_STATUS_PATH should be defined but was empty."
+  exit 1
 fi
 
 function liveness() {
