@@ -33,6 +33,7 @@ RUN apt -q update && \
     apt -qq -y full-upgrade && \
     apt -qq -y autoremove && \
     apt -qq -y --no-install-recommends install \
+      libfcgi-bin \
       pcre2-utils \
       php${PHP_VERSION}-cgi \
       php${PHP_VERSION}-cli \
@@ -42,7 +43,11 @@ RUN apt -q update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/* /var/log/*
 
 # Updated to latest available from time to time
-COPY --from=docker.io/library/composer:2.4.4 /usr/bin/composer /usr/bin/composer
+COPY --from=docker.io/library/composer:2.5.1 /usr/bin/composer /usr/bin/composer
+
+# Install basic PHP-FPM pool liveness healthcheck tool
+COPY --chown=root:root fpm-liveness.sh /usr/local/bin/fpm-liveness.sh
+
 RUN php -v && composer -V
 
 FROM base as snuffleupagus

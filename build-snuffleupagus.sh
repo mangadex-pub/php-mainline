@@ -22,7 +22,8 @@ function build() {
 
   export NO_INTERACTION=true
   if ! make -j"$(nproc)" test; then
-    echo "Some tests failed! Carefully review results!"
+    echo "Some tests failed! (exit code: $?)"
+    exit 1
   fi
 }
 

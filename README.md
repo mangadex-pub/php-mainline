@@ -10,7 +10,14 @@ TBD
 
 ## About versions
 
-Image tags follow the `$PHP_VERSION-$DEBIAN_CODENAME[-$GIT_COMMIT_SHA7][-$BUILD_TIMESTAMP]` format; for example:
+Image tags are as follows:
+
+- $PHP_VERSION
+- $PHP_VERSION-$DEBIAN_CODENAME
+- $PHP_VERSION-$DEBIAN_CODENAME-$GIT_SHA
+- $PHP_VERSION-$DEBIAN_CODENAME-$GIT_SHA-$BUILD_DATE
+
+For example:
 
 - 8.1
 - 8.1-bullseye
@@ -18,10 +25,10 @@ Image tags follow the `$PHP_VERSION-$DEBIAN_CODENAME[-$GIT_COMMIT_SHA7][-$BUILD_
 - 8.1-bullseye-a12345f-202201082204
 
 > Note that we don't run outdated PHP versions, and specifically track latest builds asap; that usually means on the
-> week of their releases for minor and patch versions, and within 2-3 weeks of release for major versions. As a result
-> this image will be as frequently updated.
+> week of their releases for minor and patch versions, and within 2-3 weeks of release for major versions if at all
+> possible with regards to third-party dependencies. As a result this image will be as frequently updated.
 >
-> Feel free to fork your slower and CVE-ridden abandonware version if you like that better.
+> Feel free to fork your own CVE-ridden abandonware version if you like that better.
 
 ## About PECLs and modules
 
