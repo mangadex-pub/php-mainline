@@ -19,11 +19,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - target: slim
-            php_version: 8.1
+          - php_version: 8.1
             tag: 8.1
-          - target: slim
-            php_version: 8.2
+          - php_version: 8.2
             tag: 8.2
 
     steps:
@@ -60,6 +58,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: ${{ matrix.target }}
           build-args: |
             PHP_VERSION=${{ matrix.php_version }}
