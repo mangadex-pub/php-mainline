@@ -50,7 +50,7 @@ jobs:
             type=raw,event=push,enable={{ is_default_branch }},value=${{ matrix.php_version }}
             type=raw,event=push,enable={{ is_default_branch }},value=${{ matrix.php_version }}-${{ matrix.debian_codename }}
             type=sha,event=push,enable={{ is_default_branch }},prefix=${{ matrix.php_version }}-${{ matrix.debian_codename }}-,format=short
-            type=sha,event=push,enable=true,prefix={{ branch }}-${{ matrix.php_version }}-${{ matrix.debian_codename }}-,format=short
+            type=sha,event=push,enable=true,prefix=branch-{{ branch }}-${{ matrix.php_version }}-${{ matrix.debian_codename }}-,format=short
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
