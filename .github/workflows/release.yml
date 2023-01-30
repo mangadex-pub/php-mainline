@@ -53,7 +53,7 @@ jobs:
             type=sha,event=push,enable=true,prefix=branch-{{ branch }}-${{ matrix.php_version }}-${{ matrix.debian_codename }}-,format=short
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: true
