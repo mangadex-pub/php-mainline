@@ -82,7 +82,7 @@ RUN php${PHP_VERSION}     -d 'sp.configuration_file=/dev/null' -m | grep "snuffl
 RUN php-cgi${PHP_VERSION} -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus" >/dev/null
 RUN php-fpm${PHP_VERSION} -d 'sp.configuration_file=/dev/null' -m | grep "snuffleupagus" >/dev/null
 
-RUN groupadd -r -g 999 mangadex && useradd -u 999 -r -g 999 mangadex
+RUN groupadd -r -g 9999 mangadex && useradd -u 9999 -r -g 9999 mangadex
 USER mangadex
 WORKDIR /tmp
 RUN php -v
