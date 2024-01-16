@@ -19,10 +19,10 @@ Image tags are as follows:
 
 For example:
 
-- 8.1
-- 8.1-bullseye
-- 8.1-bullseye-a12345f
-- branch-main-8.1-bullseye-a12345f
+- 8.2
+- 8.2-bookworm
+- 8.2-bookworm-a12345f
+- branch-main-8.2-bookworm-a12345f
 
 > Note that we don't run outdated PHP versions, and specifically track latest builds asap; that usually means on the
 > week of their releases for minor and patch versions, and within 2-3 weeks of release for major versions if at all
