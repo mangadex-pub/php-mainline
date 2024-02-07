@@ -25,9 +25,10 @@ RUN apt -q update && \
       debian-archive-keyring && \
       update-ca-certificates
 
-RUN curl -Ss https://packages.sury.org/php/apt.gpg | gpg --dearmor | tee /usr/share/keyrings/sury-archive-keyring.gpg >/dev/null && \
-    gpg --dry-run --quiet --import --import-options import-show /usr/share/keyrings/sury-archive-keyring.gpg | grep "15058500A0235D97F5D10063B188E2B695BD4743" && \
-    echo "deb [signed-by=/usr/share/keyrings/sury-archive-keyring.gpg] https://packages.sury.org/php/ ${DEBIAN_CODENAME} main" | tee /etc/apt/sources.list.d/sury-php.list
+RUN curl -sfSL -o /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb && \
+    dpkg -i /tmp/debsuryorg-archive-keyring.deb && \
+    rm /tmp/debsuryorg-archive-keyring.deb && \
+    echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ ${DEBIAN_CODENAME} main" | tee /etc/apt/sources.list.d/sury-php.list
 
 RUN apt -q update && \
     apt -qq -y full-upgrade && \
