@@ -1,13 +1,13 @@
 ARG DEBIAN_CODENAME="bookworm"
-FROM docker.io/library/debian:${DEBIAN_CODENAME}-slim as base
+FROM docker.io/library/debian:${DEBIAN_CODENAME}-slim AS base
 
 LABEL maintainer="MangaDex <opensource@mangadex.org>"
 
 ARG DEBIAN_CODENAME
-ENV DEBIAN_CODENAME "$DEBIAN_CODENAME"
+ENV DEBIAN_CODENAME="$DEBIAN_CODENAME"
 
-ENV DEBIAN_FRONTEND "noninteractive"
-ENV TZ "UTC"
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV TZ="UTC"
 RUN echo 'Dpkg::Progress-Fancy "0";' > /etc/apt/apt.conf.d/99progressbar
 
 ARG PHP_VERSION="8.3"
@@ -44,14 +44,14 @@ RUN apt -q update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/* /var/log/*
 
 # Updated to latest available from time to time
-COPY --from=docker.io/library/composer:2.7.4 /usr/bin/composer /usr/bin/composer
+COPY --from=docker.io/library/composer:2.7.8 /usr/bin/composer /usr/bin/composer
 
 # Install basic PHP-FPM pool liveness healthcheck tool
 COPY --chown=root:root fpm-liveness.sh /usr/local/bin/fpm-liveness.sh
 
 RUN php -v && composer -V
 
-FROM base as snuffleupagus
+FROM base AS snuffleupagus
 
 RUN apt -q update && \
     apt -qq -y full-upgrade && \
@@ -65,7 +65,7 @@ RUN apt -q update && \
       re2c
 
 COPY build-snuffleupagus.sh /build-snuffleupagus.sh
-RUN /build-snuffleupagus.sh "/snuffleupagus" "v0.10.0"
+RUN /build-snuffleupagus.sh "/snuffleupagus" "fbc620a4ef01df68bc66d79e316f1b158705b039"
 
 FROM base
 
